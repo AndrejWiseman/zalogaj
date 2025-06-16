@@ -60,7 +60,7 @@ document.querySelectorAll('.dodaj-u-korpu-btn').forEach(button => {
     button.addEventListener('click', () => {
         const jeloId = button.getAttribute('data-jelo-id');
 
-        fetch(`${BASE_URL}/dodaj/${jeloId}/`, {
+        fetch(`https://zalogaj.vercel.app/dodaj/${jeloId}/`, {
             method: 'POST',
             headers: {
                 'X-CSRFToken': getCookie('csrftoken'),
