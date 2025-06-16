@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-6 text-center text-2xl">Unesite podatke za narudžbinu</h2>
+
+<form method="post" class="max-w-md mx-auto bg-white p-6 rounded shadow">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div class="mb-4">
+        <label for="id_ime" class="block font-semibold mb-1">Ime i prezime</label>
+        {{ form.ime.errors }}
+        {{ form.ime }}
+    </div>
+
+    <div class="mb-4">
+        <label for="id_adresa" class="block font-semibold mb-1">Adresa</label>
+        {{ form.adresa.errors }}
+        {{ form.adresa }}
+    </div>
+
+    <div class="mb-4">
+        <label for="id_telefon" class="block font-semibold mb-1">Telefon</label>
+        {{ form.telefon.errors }}
+        {{ form.telefon }}
+    </div>
+
+    <div class="mb-4">
+        <label for="id_napomena" class="block font-semibold mb-1">Napomena (opciono)</label>
+        {{ form.napomena.errors }}
+        {{ form.napomena }}
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary px-6 py-2 rounded">
+            Pošalji narudžbinu
+        </button>
+    </div>
+</form>
+{% endblock %}

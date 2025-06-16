@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topli zalogaj</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+
+    {% block content %}
+    {% endblock %}
+    <a href="{% url 'korpa' %}" class="btn btn-primary">Korpa (<span id="korpa-broj">{{ request.session.korpa|length|default:"0" }}</span>)</a>
+
+    <script>
+        document.getElementById('korpa-broj').textContent = data.ukupno_stavki;
+
+    </script>
+    
+</body>
+</html>

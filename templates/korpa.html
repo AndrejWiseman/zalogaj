@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-6 text-center text-2xl">Vaša Korpa</h2>
+
+{% if stavke %}
+    <table class="table-auto w-full max-w-3xl mx-auto mb-6 border-collapse border border-gray-300">
+        <thead>
+            <tr class="bg-gray-100">
+                <th class="border border-gray-300 px-4 py-2 text-left">Jelo</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">Količina</th>
+                <th class="border border-gray-300 px-4 py-2 text-right">Cena po komadu</th>
+                <th class="border border-gray-300 px-4 py-2 text-right">Ukupno</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stavka in stavke %}
+            <tr>
+                <td class="border border-gray-300 px-4 py-2">{{ stavka.jelo.naziv }}</td>
+                <td class="border border-gray-300 px-4 py-2 text-center">{{ stavka.kolicina }}</td>
+                <td class="border border-gray-300 px-4 py-2 text-right">{{ stavka.jelo.cena }} KM</td>
+                <td class="border border-gray-300 px-4 py-2 text-right">{{ stavka.ukupno }} KM</td>
+            </tr>
+            {% endfor %}
+            <tr class="font-bold bg-gray-100">
+                <td colspan="3" class="border border-gray-300 px-4 py-2 text-right">Ukupno:</td>
+                <td class="border border-gray-300 px-4 py-2 text-right">{{ ukupno }} KM</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="text-center">
+        <a href="{% url 'kreiraj_narudzbu' %}" class="btn btn-success px-6 py-2 text-white rounded">
+            Naruči
+        </a>
+    </div>
+{% else %}
+    <p class="text-center text-gray-600">Vaša korpa je prazna.</p>
+{% endif %}
+
+{% endblock %}
