@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 
 # Create your views here.
@@ -18,7 +19,7 @@ from django.utils.decorators import method_decorator
 #     return render(request, 'index.html', context)
 
 
-
+@ensure_csrf_cookie
 def jelovnik_view(request):
     vrste = VrstaJela.objects.prefetch_related('jela__dodaci').all()
     return render(request, 'index.html', {'vrste': vrste})
