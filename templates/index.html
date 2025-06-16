@@ -6,11 +6,10 @@
 {% for vrsta in vrste %}
     {% if vrsta.jela.exists %}
         <div class="collapse collapse-arrow bg-base-100 border border-base-300 max-w-3xl mx-auto mb-5">
-            <input type="radio" name="my-accordion-2"  />
+            <input type="radio" name="my-accordion-2" />
             <div class="collapse-title font-semibold">{{ vrsta.naziv }}</div>
 
             <div class="collapse-content text-sm">
-
                 {% for jelo in vrsta.jela.all %}
                     <div class="mb-4 border-b pb-2">
                         <strong>{{ jelo.naziv }}</strong> - {{ jelo.cena }} KM<br>
@@ -25,7 +24,6 @@
                             </ul>
                         {% endif %}
 
-                        <!-- Dugme sada bez forme, sa data atributom -->
                         <button 
                             class="dugme dodaj-u-korpu-btn" 
                             data-jelo-id="{{ jelo.id }}">
@@ -33,12 +31,10 @@
                         </button>
                     </div>
                 {% endfor %}
-                
             </div>
         </div>
     {% endif %}
 {% endfor %}
-
 
 <script>
 // Funkcija za dobijanje CSRF tokena iz kolačića
@@ -57,37 +53,40 @@ function getCookie(name) {
     return cookieValue;
 }
 
+// URL baze (ovde koristiš isti domen jer je backend na istom kao i frontend)
+const BASE_URL = window.location.origin;
+
 document.querySelectorAll('.dodaj-u-korpu-btn').forEach(button => {
     button.addEventListener('click', () => {
         const jeloId = button.getAttribute('data-jelo-id');
 
-        fetch(`/dodaj/${jeloId}/`, {
+        fetch(`${BASE_URL}/dodaj/${jeloId}/`, {
             method: 'POST',
             headers: {
                 'X-CSRFToken': getCookie('csrftoken'),
                 'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'application/json'
             },
-            body: '{}'
+            body: '{}',
+            credentials: 'include' // obavezno zbog session-a i CSRF-a
         })
         .then(response => response.json())
         .then(data => {
             if(data.success){
                 alert(`Uspešno dodat u korpu! Ukupno stavki: ${data.ukupno_stavki}`);
-
-                // Ako imaš element za prikaz broja stavki, updateuj ga:
                 const korpaBroj = document.getElementById('korpa-broj');
                 if(korpaBroj){
                     korpaBroj.textContent = data.ukupno_stavki;
                 }
             } else {
-                alert('Došlo je do greške prilikom dodavanja u korpu.');
+                alert('Greška: ' + (data.message || 'Dodavanje u korpu nije uspelo.'));
             }
         })
-        .catch(() => alert('Greška pri konekciji.'));
+        .catch((error) => {
+            console.error(error);
+            alert('Greška pri konekciji.');
+        });
     });
 });
 </script>
-
 {% endblock %}
-
