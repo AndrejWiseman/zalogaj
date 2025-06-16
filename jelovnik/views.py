@@ -27,20 +27,6 @@ def jelovnik_view(request):
 
 
 
-# def dodaj_u_korpu(request, jelo_id):
-#     if request.method == 'POST':
-#         korpa = request.session.get('korpa', {})
-#         korpa[str(jelo_id)] = korpa.get(str(jelo_id), 0) + 1
-#         request.session['korpa'] = korpa
-#         request.session.modified = True
-
-#         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-#             # Vraćamo broj stavki u korpi
-#             ukupno_stavki = sum(korpa.values())
-#             return JsonResponse({'success': True, 'ukupno_stavki': ukupno_stavki})
-#         else:
-#             return redirect('index')
-#     return JsonResponse({'success': False}, status=400)
 @require_POST
 def dodaj_u_korpu(request, jelo_id):
     korpa = request.session.get('korpa', {})

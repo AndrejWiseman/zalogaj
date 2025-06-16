@@ -11,6 +11,7 @@
                 <th class="border border-gray-300 px-4 py-2 text-center">Količina</th>
                 <th class="border border-gray-300 px-4 py-2 text-right">Cena po komadu</th>
                 <th class="border border-gray-300 px-4 py-2 text-right">Ukupno</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">Ukloni</th>
             </tr>
         </thead>
         <tbody>
@@ -20,11 +21,18 @@
                 <td class="border border-gray-300 px-4 py-2 text-center">{{ stavka.kolicina }}</td>
                 <td class="border border-gray-300 px-4 py-2 text-right">{{ stavka.jelo.cena }} KM</td>
                 <td class="border border-gray-300 px-4 py-2 text-right">{{ stavka.ukupno }} KM</td>
+                <td class="border border-gray-300 px-4 py-2 text-center">
+                    <form method="POST" action="{% url 'ukloni_iz_korpe' stavka.jelo.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-error text-white">Ukloni</button>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
             <tr class="font-bold bg-gray-100">
                 <td colspan="3" class="border border-gray-300 px-4 py-2 text-right">Ukupno:</td>
                 <td class="border border-gray-300 px-4 py-2 text-right">{{ ukupno }} KM</td>
+                <td class="border border-gray-300"></td>
             </tr>
         </tbody>
     </table>
