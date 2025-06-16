@@ -4,6 +4,11 @@ from django.views.decorators.http import require_POST
 from .models import VrstaJela, Jelo, Dodatak
 from django.http import JsonResponse
 
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.utils.decorators import method_decorator
+
+
 # Create your views here.
 # def index(request):
 
@@ -21,20 +26,32 @@ def jelovnik_view(request):
 
 
 
-def dodaj_u_korpu(request, jelo_id):
-    if request.method == 'POST':
-        korpa = request.session.get('korpa', {})
-        korpa[str(jelo_id)] = korpa.get(str(jelo_id), 0) + 1
-        request.session['korpa'] = korpa
-        request.session.modified = True
+# def dodaj_u_korpu(request, jelo_id):
+#     if request.method == 'POST':
+#         korpa = request.session.get('korpa', {})
+#         korpa[str(jelo_id)] = korpa.get(str(jelo_id), 0) + 1
+#         request.session['korpa'] = korpa
+#         request.session.modified = True
 
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            # Vraćamo broj stavki u korpi
-            ukupno_stavki = sum(korpa.values())
-            return JsonResponse({'success': True, 'ukupno_stavki': ukupno_stavki})
-        else:
-            return redirect('index')
-    return JsonResponse({'success': False}, status=400)
+#         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+#             # Vraćamo broj stavki u korpi
+#             ukupno_stavki = sum(korpa.values())
+#             return JsonResponse({'success': True, 'ukupno_stavki': ukupno_stavki})
+#         else:
+#             return redirect('index')
+#     return JsonResponse({'success': False}, status=400)
+@require_POST
+def dodaj_u_korpu(request, jelo_id):
+    korpa = request.session.get('korpa', {})
+    korpa[str(jelo_id)] = korpa.get(str(jelo_id), 0) + 1
+    request.session['korpa'] = korpa
+    request.session.modified = True
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        ukupno_stavki = sum(korpa.values())
+        return JsonResponse({'success': True, 'ukupno_stavki': ukupno_stavki})
+    else:
+        return redirect('index')  # fallback ako POST nije AJAX
 
 
 
